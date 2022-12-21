@@ -14,12 +14,14 @@ void main() {
   group('FakeAuthRepository', () {
     test('currenUser is null', () {
       final authRepository = makeAuthRepository();
+      addTearDown(authRepository.dispose);
       expect(authRepository.currentUser, null);
       expect(authRepository.authStateChanges(), emits(null));
     });
 
     test('currentUser is not null after sign in', () async {
       final authRepository = makeAuthRepository();
+      addTearDown(authRepository.dispose);
       await authRepository.signInWithEmailAndPassword(testEmail, testPassword);
       expect(authRepository.currentUser, testUser);
       expect(authRepository.authStateChanges(), emits(testUser));
@@ -27,6 +29,7 @@ void main() {
 
     test('currentUser is not null after registration', () async {
       final authRepository = makeAuthRepository();
+      addTearDown(authRepository.dispose);
       await authRepository.createUserWithEmailAndPassword(
           testEmail, testPassword);
       expect(authRepository.currentUser, testUser);
@@ -35,6 +38,7 @@ void main() {
 
     test('current user is null after signOut', () async {
       final authRepository = makeAuthRepository();
+      addTearDown(authRepository.dispose);
       await authRepository.signInWithEmailAndPassword(testEmail, testPassword);
       expect(authRepository.currentUser, testUser);
       expect(authRepository.authStateChanges(), emits(testUser));
